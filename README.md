@@ -1,4 +1,4 @@
-# Índice de Comandos (No Premium)
+# Índice de Comandos
 
 - Gestión de Actividades
   - [/raid](#raid)
