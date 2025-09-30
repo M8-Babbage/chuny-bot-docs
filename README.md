@@ -8,7 +8,6 @@
 - **🔵 Roles Autorizados**: Roles configurados para notificaciones
 - **🟢 Roles de Gremio**: Roles de gremio/alianza configurados
 - **🟣 Roles de Economía**: Roles con permisos específicos de economía
-- **🔍 Usuarios Autorizados**: Usuarios específicos autorizados para scanner
 - **⚪ Público**: Disponible para todos los usuarios
 
 ---
