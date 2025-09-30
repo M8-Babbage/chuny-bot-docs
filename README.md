@@ -1,274 +1,391 @@
-# Índice de Comandos
+# 📚 Documentación Oficial de Comandos - Chuny Bot
 
-- Gestión de Actividades
-  - [/raid](#raid)
-  - [/split](#split)
-  - [/status](#status)
-- Gestión de Claims
-  - [/claim](#claim)
-- Gestión de Plantillas
-  - [/template](#template)
-  - [/migrate](#migrate)
-- Visualización de Armas y Categorías
-  - [/show_all_weapons](#show_all_weapons)
-  - [/show_all_categories](#show_all_categories)
-- Gestión de Economía
-  - [/economy](#economy)
-  - [/economy-roles](#economy-roles)
-- Gestión de Roles Autorizados
-  - [/roles](#roles)
+## 🔐 Sistema de Permisos
+
+### Tipos de Permisos
+- **🟠 Administrador**: Administradores del servidor de Discord
+- **🟡 Premium**: Servidores con estado premium
+- **🔵 Roles Autorizados**: Roles configurados para notificaciones
+- **🟢 Roles de Gremio**: Roles de gremio/alianza configurados
+- **🟣 Roles de Economía**: Roles con permisos específicos de economía
+- **🔍 Usuarios Autorizados**: Usuarios específicos autorizados para scanner
+- **⚪ Público**: Disponible para todos los usuarios
 
 ---
 
-## /raid
+## 📋 Lista Completa de Comandos
 
-- Descripción
-  - Envía una notificación de actividad usando una plantilla del servidor y publica un mensaje con selección de armas, botones de “Lista de espera” y “No puedo ir”, y recordatorios opcionales.
-- Sintaxis
-  - `/raid template:<string> time:<string(1-60)> title:<string?> description:<string?> color:<hex?> image:<url?> reminder:<string(1-60)?> roles_to_notify:<ids_comas?>`
-- Permisos
-  - Requiere rol autorizado en el servidor (Authorized Roles) conforme a la política del servidor. Requiere estado premium del servidor.
-- Parámetros
-  - `template` (obligatorio): nombre de la plantilla.
-  - `time` (obligatorio): minutos restantes (1–60).
-  - `title` (opcional): título personalizado.
-  - `description` (opcional): descripción del evento.
-  - `color` (opcional): color del embed en formato `#RRGGBB`.
-  - `image` (opcional): URL de imagen para el embed.
-  - `reminder` (opcional): minutos antes para enviar recordatorio (1–60).
-  - `roles_to_notify` (opcional): IDs de roles a mencionar, separados por coma.
-- Ejemplos
-  - `/raid template:Avalon time:45 title:"Avalon Roam" color:#00FFFF reminder:10`
-- Errores y soluciones
-  - `Plantilla No Encontrada`: verifica el nombre o crea una nueva plantilla.
-  - `Error en el Tiempo del Evento`: usa valores 1–60.
-  - `Acceso denegado`: solicita a un admin agregarte a roles autorizados.
+### 🎯 `/raid` - Crear Notificaciones de Actividades
+**Descripción**: Envía notificaciones para actividades usando plantillas del servidor
+
+**Permisos Requeridos**: 🟡 Premium + 🔵 Roles Autorizados
+
+**Opciones**:
+- `template` (obligatorio): Plantilla a usar para la actividad
+- `time` (obligatorio): Tiempo restante en minutos (1-60)
+- `title` (opcional): Título personalizado
+- `description` (opcional): Descripción personalizada
+- `color` (opcional): Color del embed en formato hexadecimal (#FFFFFF)
+- `image` (opcional): URL de imagen para el embed
+- `reminder` (opcional): Minutos antes para recordatorio (1-60)
+- `roles_to_notify` (opcional): IDs de roles a notificar separados por comas
+
+**Ejemplo de uso**:
+```
+/raid template:Avalonian_Dungeon time:30 title:Dungeon T8.3 description:Necesitamos tank y healer reminder:10
+```
 
 ---
 
-## /split
+### 🏛️ `/template` - Gestión de Plantillas
+**Descripción**: Sistema completo para gestionar plantillas de actividades
 
-- Descripción
-  - Divide a los participantes de un evento en grupos o roles definidos (si aplica), optimizando la organización.
-- Sintaxis
-  - `/split`
-- Permisos
-  - Normalmente administradores/autorizados según política del servidor.
-- Parámetros
-  - Sin parámetros obligatorios.
-- Ejemplos
-  - `/split`
-- Errores y soluciones
-  - `Permisos insuficientes`: solicita rol autorizado o apoyo de admin.
+**Permisos Requeridos**: 🟡 Premium + 🔵 Roles Autorizados
 
----
+#### Subcomandos:
 
-## /status
+**`/template create`**
+- Inicia el asistente de creación de plantillas
+- Proceso interactivo paso a paso
 
-- Descripción
-  - Muestra información general del bot y estado del sistema.
-- Sintaxis
-  - `/status`
-- Permisos
-  - Disponible para usuarios del servidor.
-- Parámetros
-  - Sin parámetros.
-- Ejemplos
-  - `/status`
-- Errores y soluciones
-  - `Error interno`: reintenta o contacta a un administrador.
+**`/template edit`**
+- `name` (obligatorio): Nombre de la plantilla a editar
+- Sistema de edición interactivo con menús
 
----
+**`/template list`**
+- Lista todas las plantillas disponibles en el servidor
 
-## /claim
+**`/template clone`**
+- `source` (obligatorio): Plantilla origen a clonar
+- `new_name` (obligatorio): Nombre para la nueva plantilla
 
-- Descripción
-  - Gestiona claims (reservas) de actividades: creación, cancelación, completado y configuración automática de canales.
-- Sintaxis
-  - Subcomandos:
-    - `create actividad:<string> mapa:<string> tiempo:<string> descripcion:<string?>`
-    - `cancel claim_id:<string>`
-    - `complete claim_id:<string>`
-    - `setup`
-- Permisos
-  - `create`: disponible para todos.
-  - `cancel/complete`: usuario estándar sobre sus propios claims; roles autorizados y administradores sobre cualquier claim.
-  - `setup`: administradores o roles autorizados.
-- Parámetros
-  - `create`:
-    - `actividad` (obligatorio)
-    - `mapa` (obligatorio)
-    - `tiempo` (obligatorio, ej: `1h 30m`, `45m`)
-    - `descripcion` (opcional)
-  - `cancel` / `complete`:
-    - `claim_id` (obligatorio)
-  - `setup`: sin parámetros; crea categoría `claims` y canales por defecto.
-- Ejemplos
-  - `/claim create actividad:"Orbe de Poder" mapa:"Caerleon" tiempo:"45m"`
-  - `/claim cancel claim_id:ABC123`
-  - `/claim complete claim_id:ABC123`
-  - `/claim setup`
-- Errores y soluciones
-  - `Configuración Incompleta`: ejecuta `/claim setup` para crear canales.
-  - `No tienes permisos`: valida si eres autor del claim o solicita rol autorizado/admin.
+**`/template delete`**
+- `name` (obligatorio): Nombre de la plantilla a eliminar
+
+**`/template export`**
+- `name` (obligatorio): Plantilla a exportar
+- Genera archivo JSON descargable
+
+**`/template import`**
+- `file` (obligatorio): Archivo JSON de plantilla
+- `name` (obligatorio): Nombre para la plantilla importada
+
+**`/template rename`**
+- `name` (obligatorio): Plantilla actual a renombrar
+- `new_name` (obligatorio): Nuevo nombre
+
+**Ejemplo de uso**:
+```
+/template create
+/template edit name:Avalonian_Dungeon
+/template clone source:Dungeon_Base new_name:Dungeon_T8
+```
 
 ---
 
-## /template
+### 💰 `/economy` - Sistema de Economía
+**Descripción**: Gestiona la economía del servidor con sistema de dinero virtual
 
-- Descripción
-  - Editor integral de plantillas de actividades (armas, roles, descripción, etc.).
-- Sintaxis (acciones comunes)
-  - `/template` (abre el editor y navegación por botones/menus)
-- Permisos
-  - Usualmente administradores o roles autorizados (según servidor).
-- Parámetros
-  - Se gestionan vía componentes (botones/select/modals) dentro del editor.
-- Ejemplos
-  - `/template` → editar categorías/armas, actualizar título/descr.
-- Errores y soluciones
-  - `Acceso denegado`: solicita rol autorizado/admin.
-  - `Datos inválidos`: revisa formatos y límites mostrados por el sistema.
+**Permisos Requeridos**: 🟡 Premium + 🟣 Roles de Economía
 
----
+#### Subcomandos:
 
-## /migrate
+**`/economy add`**
+- `usuario` (obligatorio): Usuario al que añadir dinero
+- `cantidad` (obligatorio): Cantidad a añadir (1-999,999,999)
+- `razon` (opcional): Razón para añadir el dinero (máx. 200 caracteres)
+- **Permiso específico**: ECONOMY_ADD
 
-- Descripción
-  - Migra o adapta información/configuración del sistema a versiones nuevas.
-- Sintaxis
-  - `/migrate`
-- Permisos
-  - Normalmente administradores/autorizados.
-- Parámetros
-  - Sin parámetros.
-- Ejemplos
-  - `/migrate`
-- Errores y soluciones
-  - `Permisos insuficientes`: solicita asistencia de un administrador.
+**`/economy remove`**
+- `usuario` (obligatorio): Usuario al que quitar dinero
+- `cantidad` (obligatorio): Cantidad a quitar (1-999,999,999)
+- `razon` (opcional): Razón para quitar el dinero (máx. 200 caracteres)
+- **Permiso específico**: ECONOMY_REMOVE
 
----
+**`/economy balance`**
+- `usuario` (opcional): Usuario del que ver el balance
+- Si no se especifica, muestra el balance propio
+- **Permiso específico**: ECONOMY_VIEW + 🟢 Roles de Gremio
 
-## /show_all_weapons
+**`/economy top`**
+- `cantidad` (opcional): Número de usuarios a mostrar (1-20, por defecto 10)
+- **Permiso específico**: ECONOMY_VIEW + 🟢 Roles de Gremio
 
-- Descripción
-  - Muestra un listado de todas las armas disponibles configuradas en el sistema.
-- Sintaxis
-  - `/show_all_weapons`
-- Permisos
-  - Visibilidad según políticas del servidor (típicamente administradores/autorizados).
-- Parámetros
-  - Sin parámetros.
-- Ejemplos
-  - `/show_all_weapons`
-- Errores y soluciones
-  - `No hay armas`: verifica la carga de datos o contacto admin.
+**Ejemplo de uso**:
+```
+/economy add usuario:@Juan cantidad:1000 razon:Recompensa por evento
+/economy balance usuario:@María
+/economy top cantidad:15
+```
 
 ---
 
-## /show_all_categories
+### 🏰 `/guilds` - Gestión de Roles de Gremio
+**Descripción**: Administra roles de gremio/alianza para permisos especiales
 
-- Descripción
-  - Muestra todas las categorías de armas configuradas.
-- Sintaxis
-  - `/show_all_categories`
-- Permisos
-  - Visibilidad según políticas del servidor.
-- Parámetros
-  - Sin parámetros.
-- Ejemplos
-  - `/show_all_categories`
-- Errores y soluciones
-  - `Sin categorías`: valida configuración o contacto admin.
+**Permisos Requeridos**: 🟠 Administrador
 
----
+#### Subcomandos:
 
-## /economy
+**`/guilds add`**
+- `role` (obligatorio): Rol a añadir como rol de gremio
 
-- Descripción
-  - Gestiona balances y operaciones económicas del servidor, incluyendo cálculo de regear desde imágenes.
-- Sintaxis (subcomandos)
-  - `add usuario:<user> cantidad:<int> razon:<string?>`
-  - `remove usuario:<user> cantidad:<int> razon:<string?>`
-  - `balance usuario:<user?>`
-  - `top cantidad:<int?>`
-  - `regear image:<attachment> user:<user?>`
-- Permisos
-  - Requiere roles de economía según el subcomando:
-    - `add`: `ECONOMY_ADD` o `ECONOMY`
-    - `remove`: `ECONOMY_REMOVE` o `ECONOMY`
-    - `balance`: ver propio balance libre; ver ajeno requiere `ECONOMY_VIEW` o `ECONOMY`
-    - `top`: `ECONOMY_VIEW` o `ECONOMY`
-    - `regear`: `ECONOMY`
-- Parámetros
-  - `add/remove`: `usuario` (obligatorio), `cantidad` (obligatorio 1–999999999), `razon` (opcional)
-  - `balance`: `usuario` (opcional; si no, muestra el propio)
-  - `top`: `cantidad` (opcional 1–20)
-  - `regear`: `image` (obligatorio), `user` (opcional)
-- Ejemplos
-  - `/economy add usuario:@User cantidad:500 razon:"Recompensa"`
-  - `/economy remove usuario:@User cantidad:100 razon:"Multa"`
-  - `/economy balance` (propio) / `/economy balance usuario:@User` (ajeno)
-  - `/economy top cantidad:10`
-  - `/economy regear image:<captura> user:@User`
-- Errores y soluciones
-  - `Permisos de Economía Insuficientes`: solicita el rol correspondiente.
-  - `Imagen requerida (regear)`: adjunta una imagen clara del set.
-  - `API de precios sin datos`: reintenta o usa otra ciudad/atributos.
+**`/guilds remove`**
+- `role` (obligatorio): Rol a eliminar de roles de gremio
+
+**`/guilds list`**
+- Lista todos los roles de gremio configurados
+- Limpia automáticamente roles obsoletos
+
+**Ejemplo de uso**:
+```
+/guilds add role:@Gremio_Principal
+/guilds remove role:@Gremio_Inactivo
+/guilds list
+```
 
 ---
 
-## /economy-roles
+### 🎭 `/roles` - Gestión de Roles Autorizados
+**Descripción**: Gestiona roles autorizados para enviar notificaciones
 
-- Descripción
-  - Gestiona roles con permisos de economía: alta, baja, listado, sincronización, etc.
-- Sintaxis (subcomandos comunes)
-  - `add rol:<role> permisos:<string> descripcion:<string?>`
-  - `remove rol:<role>`
-  - `list`
-  - `sync`
-  - `clear`
-  - `stats`
-- Permisos
-  - Administradores/propietario, según políticas del servidor.
-- Parámetros
-  - `add`: `rol` (obligatorio), `permisos` (obligatorio: `ECONOMY_ADD|ECONOMY_REMOVE|ECONOMY_VIEW|ECONOMY_ADMIN|ALL`), `descripcion` (opcional)
-  - `remove`: `rol` (obligatorio)
-  - `list/sync/clear/stats`: sin parámetros.
-- Ejemplos
-  - `/economy-roles add rol:@Economy permisos:ECONOMY_VIEW`
-  - `/economy-roles list`
-- Errores y soluciones
-  - `Servidor sin premium/roles`: valida políticas del servidor y ajusta roles.
+**Permisos Requeridos**: 🟡 Premium + 🟠 Administrador
 
----
+#### Subcomandos:
 
-## /roles
+**`/roles add`**
+- `role` (obligatorio): Rol a autorizar para notificaciones
 
-- Descripción
-  - Gestiona roles autorizados del servidor (alta/baja/lista). Estos roles habilitan comandos de operación (como /raid) sin ser administradores.
-- Sintaxis (subcomandos comunes)
-  - `add rol:<role>`
-  - `remove rol:<role>`
-  - `list`
-- Permisos
-  - Administradores/propietario.
-- Parámetros
-  - `add/remove`: `rol` (obligatorio)
-  - `list`: sin parámetros.
-- Ejemplos
-  - `/roles add rol:@Autorizado`
-  - `/roles list`
-- Errores y soluciones
-  - `Rol no encontrado`: verifica que el rol existe en tu servidor.
+**`/roles remove`**
+- `role` (obligatorio): Rol a desautorizar
+
+**`/roles list`**
+- Lista todos los roles autorizados
+
+**`/roles clear`**
+- Elimina todos los roles autorizados del servidor
+
+**Ejemplo de uso**:
+```
+/roles add role:@Creadores_Contenido
+/roles remove role:@Rol_Temporal
+/roles list
+```
 
 ---
 
-# Notas Generales de Error
+### 💎 `/economy-roles` - Gestión de Roles de Economía
+**Descripción**: Administra roles con permisos específicos del sistema de economía
 
-- `Acceso Denegado` / `Permisos Insuficientes`
-  - Solicita al administrador que te asigne el rol requerido.
-- `Formato Inválido`
-  - Revisa la sintaxis exacta descrita en cada comando.
-- `Recursos no encontrados`
-  - Verifica nombres y existencia en el servidor (plantillas, roles, claims).
+**Permisos Requeridos**: 🟡 Premium + 🟠 Administrador
+
+#### Subcomandos:
+
+**`/economy-roles add`**
+- `rol` (obligatorio): Rol a autorizar para economía
+- `permisos` (opcional): Permisos específicos a otorgar
+  - `ECONOMY`: Permisos básicos
+  - `ECONOMY_ADD`: Añadir dinero
+  - `ECONOMY_REMOVE`: Eliminar dinero
+  - `ECONOMY_VIEW`: Ver balances
+  - `ECONOMY_ADMIN`: Administrador completo
+  - `ALL`: Todos los permisos
+- `descripcion` (opcional): Descripción del rol (máx. 500 caracteres)
+
+**`/economy-roles remove`**
+- `rol` (obligatorio): Rol a desautorizar
+
+**`/economy-roles list`**
+- Lista todos los roles de economía autorizados
+
+**`/economy-roles sync`**
+- Sincroniza roles con Discord (elimina roles inexistentes)
+
+**`/economy-roles clear`**
+- Elimina todos los roles de economía del servidor
+
+**`/economy-roles stats`**
+- Muestra estadísticas de roles de economía
+
+**Ejemplo de uso**:
+```
+/economy-roles add rol:@Tesoreros permisos:ECONOMY_ADD descripcion:Encargados de recompensas
+/economy-roles list
+/economy-roles sync
+```
+
+---
+
+### 🎯 `/claim` - Sistema de Claims
+**Descripción**: Sistema para apartar actividades y recursos de Albion Online
+
+**Permisos Requeridos**: ⚪ Público (crear) / 🟠 Administrador + 🔵 Roles Autorizados + 🟢 Roles de Gremio (gestionar)
+
+#### Subcomandos:
+
+**`/claim create`**
+- `actividad` (obligatorio): Tipo de actividad (máx. 100 caracteres)
+- `mapa` (obligatorio): Mapa donde se realizará (máx. 100 caracteres)
+- `tiempo` (obligatorio): Tiempo hasta completar (ej: 1h 30m, 45m)
+- `descripcion` (opcional): Descripción adicional (máx. 500 caracteres)
+
+**`/claim complete`**
+- `claim_id` (obligatorio): ID del claim a completar
+- Solo el creador, administradores, roles autorizados o roles de gremio
+
+**`/claim cancel`**
+- `claim_id` (obligatorio): ID del claim a cancelar
+- Solo el creador, administradores, roles autorizados o roles de gremio
+
+**`/claim setup`**
+- Configura automáticamente categoría y canales para claims
+- **Permiso específico**: 🟠 Administrador
+
+**Ejemplo de uso**:
+```
+/claim create actividad:Orbe de Poder T8 mapa:Caerleon tiempo:2h descripcion:Necesitamos 20 personas
+/claim complete claim_id:CLAIM_ABC123
+/claim cancel claim_id:CLAIM_XYZ789
+```
+
+---
+
+### 🔍 `/decode` - Decodificador Misterioso
+**Descripción**: Decodifica información usando herramienta misteriosa desde archivos
+
+**Permisos Requeridos**: 🔍 Usuarios Autorizados
+
+**Opciones**:
+- `archivo` (obligatorio): Archivo .txt/.dat con datos hexadecimales
+
+**Ejemplo de uso**:
+```
+/decode archivo:[adjuntar_archivo.txt]
+```
+
+---
+
+### 💸 `/split` - Calculadora de División de Botín
+**Descripción**: Calcula división de botín entre jugadores con impuestos
+
+**Permisos Requeridos**: 🟡 Premium
+
+**Opciones**:
+- `motivo` (obligatorio): Motivo de la división (máx. 100 caracteres)
+- `cantidad_total` (obligatorio): Cantidad total a dividir (mínimo 1)
+- `jugadores` (obligatorio): Número de jugadores (2-20)
+- `tax` (opcional): Porcentaje de impuesto (0-50%)
+
+**Ejemplo de uso**:
+```
+/split motivo:Dungeon T8.3 cantidad_total:5000000 jugadores:5 tax:15
+```
+
+---
+
+### ⚔️ `/show_all_weapons` - Lista de Armas
+**Descripción**: Muestra todas las armas disponibles en la base de datos
+
+**Permisos Requeridos**: 🟡 Premium
+
+**Sin opciones adicionales**
+
+**Ejemplo de uso**:
+```
+/show_all_weapons
+```
+
+---
+
+### 📂 `/show_all_categories` - Lista de Categorías
+**Descripción**: Muestra todas las categorías de armas disponibles
+
+**Permisos Requeridos**: 🟡 Premium
+
+**Sin opciones adicionales**
+
+**Ejemplo de uso**:
+```
+/show_all_categories
+```
+
+---
+
+### 📊 `/status` - Estado del Sistema
+**Descripción**: Información de estado del servidor y plantillas
+
+**Permisos Requeridos**: ⚪ Público
+
+**Sin opciones adicionales**
+
+**Ejemplo de uso**:
+```
+/status
+```
+
+---
+
+## 🔧 Configuración Inicial Recomendada
+
+### Para Administradores de Servidor:
+
+1. **Configurar Premium**: Contactar al propietario del bot para activar premium
+2. **Configurar Roles Autorizados**: 
+   ```
+   /roles add role:@Creadores_Contenido
+   ```
+3. **Configurar Roles de Gremio** (opcional):
+   ```
+   /guilds add role:@Gremio_Principal
+   ```
+4. **Configurar Sistema de Economía** (opcional):
+   ```
+   /economy-roles add rol:@Tesoreros permisos:ALL
+   ```
+5. **Configurar Sistema de Claims** (opcional):
+   ```
+   /claim setup
+   ```
+6. **Crear Plantillas**:
+   ```
+   /template create
+   ```
+
+### Para Usuarios Regulares:
+
+1. **Ver estado del servidor**:
+   ```
+   /status
+   ```
+2. **Crear claims de actividades**:
+   ```
+   /claim create actividad:Dungeon T7 mapa:Thetford tiempo:1h
+   ```
+3. **Ver balance personal** (si tienes permisos):
+   ```
+   /economy balance
+   ```
+
+---
+
+## ⚠️ Notas Importantes
+
+- **Premium**: Muchos comandos requieren que el servidor tenga estado premium
+- **Permisos Acumulativos**: Algunos comandos requieren múltiples tipos de permisos
+- **Administradores**: Los administradores de Discord tienen permisos elevados en la mayoría de comandos
+- **Roles de Gremio**: Proporcionan permisos adicionales para economía y gestión de claims
+- **Autocompletado**: Muchos comandos incluyen autocompletado para facilitar su uso
+
+---
+
+## 🆘 Soporte
+
+Si encuentras problemas con algún comando:
+1. Verifica que tienes los permisos necesarios
+2. Asegúrate de que el servidor tiene premium (si es requerido)
+3. Contacta a un administrador del servidor
+4. Como último recurso, contacta al propietario del bot
+
+---
+
+*Documentación generada automáticamente - Versión 1.0*
